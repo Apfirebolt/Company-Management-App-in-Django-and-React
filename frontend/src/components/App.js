@@ -4,8 +4,6 @@
 
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import HomePageComponent from '../pages/Home';
-import AccountsPageComponent from '../pages/AccountRoutes';
 import RegisterPage from '../pages/Register';
 import LoginPage from '../pages/Login';
 import DashboardPage from '../pages/Dashboard';
@@ -39,11 +37,9 @@ class App extends Component {
                       <div className="container">
                       <ToastContainer/>
                         <Switch>
-                          <Route exact path="/" component={HomePageComponent} />
-                          <Route exact path="/accounts" component={AccountsPageComponent} />
+                          <PrivateRoute exact path="/" component={DashboardPage} />
                           <Route exact path="/register" component={RegisterPage} />
                           <Route exact path="/login" component={LoginPage} />
-                          <PrivateRoute exact path="/dashboard" component={DashboardPage} />
                         </Switch>
                       </div>
                     </Router>
