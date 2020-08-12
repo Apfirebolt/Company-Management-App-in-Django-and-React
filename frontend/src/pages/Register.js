@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './accountStyles.scss';
 import { connect } from 'react-redux';
+import * as actionTypes from '../store/accounts/accountActions';
 
 
 class RegisterPage extends Component {
@@ -19,7 +20,6 @@ class RegisterPage extends Component {
     }
 
     resetForm(e) {
-        console.log('Reset form called...');
         e.preventDefault();
         let { userName, userEmail, userPassword, userConfirmPassword, errors } = this.state;
         this.setState({
@@ -41,6 +41,8 @@ class RegisterPage extends Component {
             email: userEmail,
             password: userPassword
           }
+          // Calling register function
+            console.log('Calling register function..', data);
           registerUser(data);
 
           userName = "";
@@ -137,11 +139,8 @@ class RegisterPage extends Component {
     render() {
         let { userName, userEmail, userPassword, userConfirmPassword, errors } = this.state;
         return (
-            <div className="form">
-                <p>
-                    {userName} - {userPassword} - {userConfirmPassword} - {userEmail}
-                </p>
-                <h1 className="title has-text-info has-text-centered">REGISTER</h1>
+            <div className="form form_container">
+                <h1 className="title has-text-centered">REGISTER</h1>
                 <div className="field">
                   <label className="label" htmlFor="username">Please Enter Your Username</label>
                   <div className="control">
@@ -213,8 +212,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAllFriends: () => {
-      // dispatch(actionCreators.get_all_friends());
+    registerUser: (data) => {
+      dispatch(actionTypes.register(data));
     },
   }
 };

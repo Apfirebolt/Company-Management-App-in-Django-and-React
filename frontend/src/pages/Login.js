@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './accountStyles.scss';
 import { connect } from 'react-redux';
+import * as actionTypes from '../store/accounts/accountActions';
 
 
 class LoginPage extends Component {
@@ -27,7 +28,7 @@ class LoginPage extends Component {
 
     onDataSubmit() {
         let { userName, userPassword, errors } = this.state;
-        let { registerUser } = this.props;
+        let { userLogin } = this.props;
         event.preventDefault();
 
         if (this.validateForm()) {
@@ -35,7 +36,7 @@ class LoginPage extends Component {
             username: userName,
             password: userPassword
           }
-          registerUser(data);
+          userLogin(data);
 
           userName = "";
           userPassword = "";
@@ -70,12 +71,12 @@ class LoginPage extends Component {
 
     if (!userName) {
       formIsValid = false;
-      errors["username"] = "*Please enter your username.";
+      errors["username"] = "Please enter your username.";
     }
 
     if (!userPassword) {
       formIsValid = false;
-      errors["password"] = "*Please enter your password.";
+      errors["password"] = "Please enter your password.";
     }
 
     this.setState({
@@ -87,8 +88,8 @@ class LoginPage extends Component {
     render() {
         let { userName, userPassword, errors } = this.state;
         return (
-            <div className="form">
-                <h1 className="title has-text-info has-text-centered">LOGIN</h1>
+            <div className="form form_container">
+                <h1 className="title has-text-centered">LOGIN</h1>
                 <div className="field">
                   <label className="label" htmlFor="username">Please Enter Your Username</label>
                   <div className="control">
@@ -135,8 +136,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getAllFriends: () => {
-      // dispatch(actionCreators.get_all_friends());
+    userLogin: (payload) => {
+      dispatch(actionTypes.login(payload));
     },
   }
 };

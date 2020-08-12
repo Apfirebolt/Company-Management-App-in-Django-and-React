@@ -8,27 +8,29 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework import status
 from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
 
 # Register API
-class RegisterAPI(generics.GenericAPIView):
-  serializer_class = RegisterSerializer
 
-  def post(self, request, *args, **kwargs):
+class RegisterAPI(generics.CreateAPIView):
+  serializer_class = RegisterSerializer
+  permission_classes = []
+
+  def create(self, request, *args, **kwargs):  # <- here i forgot self
     serializer = self.get_serializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    user = serializer.save()
+    self.perform_create(serializer)
+    headers = self.get_success_headers(serializer.data)
+    token, created = Token.objects.get_or_create(user=serializer.instance)
     return Response({
-      "user": UserSerializer(user, context=self.get_serializer_context()).data,
-      "message": 'New user was created successfully!'
-    }, status=status.HTTP_201_CREATED)
+      'token': token.key,
+      'message': 'You have successfully registered'
+    }, status=status.HTTP_201_CREATED, headers=headers)
 
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-  if created:
-      Token.objects.create(user=instance)
 
 # Login API
 class LoginAPI(generics.GenericAPIView):
+  permission_classes = []
 
   def post(self, request):
     params = request.data
