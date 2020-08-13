@@ -22,6 +22,20 @@ class AddCompanyModal extends Component {
         this.onFileChange = this.onFileChange.bind(this);
     }
 
+    componentDidMount() {
+        let { mode, companyData } = this.props;
+        if(mode == 'Edit') {
+            this.setState({
+                companyName: companyData.company_name,
+                companyOwner: companyData.company_owner,
+                companyEmployees: companyData.company_employees,
+                companyShares: companyData.company_shares,
+                companyWorth: companyData.company_worth,
+                companyImage: companyData.company_logo
+            })
+        }
+    }
+
     handleInputChange(e) {
         let currentField = e.target.name;
         let currentValue = e.target.value;
@@ -103,6 +117,7 @@ class AddCompanyModal extends Component {
 
     submitData() {
         let {  companyName, companyOwner, companyEmployees, companyWorth, companyShares, companyImage } = this.state;
+        let { mode, addCompany, editCompany, companyData } = this.props;
         event.preventDefault();
 
         if (this.validateForm()) {
@@ -112,11 +127,21 @@ class AddCompanyModal extends Component {
           formData.append("company_owner", companyOwner);
           formData.append("company_worth", companyWorth);
           formData.append("company_shares", companyShares);
-          formData.append("company_employees", companyShares);
+          formData.append("company_employees", companyEmployees);
           formData.append("company_logo", companyImage);
 
           // Calling the API function
-          // setAccountSettings(formData);
+          if(mode == 'Edit') {
+              let data = {
+                  actualFormData: formData,
+                  id: companyData.id
+              }
+              editCompany(data);
+          }
+          else {
+              addCompany(formData);
+          }
+          this.props.closeCompanyModal();
         }
     }
 
@@ -133,9 +158,11 @@ class AddCompanyModal extends Component {
         })
     }
     render() {
-        let { companyName, companyOwner, companyEmployees, companyWorth, companyShares, companyImage } = this.state;
+        let { companyName, companyOwner, companyEmployees, companyWorth, companyShares, companyImage, errors } = this.state;
+        let { mode, companyData, editCompany } = this.props;
         return (
             <form className="modal_container" method="post" encType="multipart/form-data">
+                <p className="title has-text-centered">{mode == 'Edit' ? 'EDIT COMPANY' : 'ADD COMPANY'}</p>
                 <div className="field is-horizontal">
                   <div className="field-label is-normal">
                     <label className="label" htmlFor="company_name">Company Name</label>
@@ -144,10 +171,14 @@ class AddCompanyModal extends Component {
                     <div className="field">
                       <p className="control">
                         <input className="input" name="company_name" id="company_name" type="email"
-                               placeholder="Company Name" value={companyName} onChange={(e) => {this.handleInputChange(e)}}/>
+                               placeholder="Company Name" value={companyName}
+                               onChange={(e) => {this.handleInputChange(e)}}/>
                       </p>
                     </div>
                   </div>
+                 {errors.company_name &&
+                    <p className="has-text-danger">{errors.company_name}</p>
+                 }
                 </div>
 
                 <div className="field is-horizontal">
@@ -162,6 +193,9 @@ class AddCompanyModal extends Component {
                       </p>
                     </div>
                   </div>
+                  {errors.company_owner &&
+                    <p className="has-text-danger">{errors.company_owner}</p>
+                  }
                 </div>
 
                 <div className="field is-horizontal">
@@ -176,6 +210,9 @@ class AddCompanyModal extends Component {
                       </p>
                     </div>
                   </div>
+                  {errors.company_employees &&
+                    <p className="has-text-danger">{errors.company_employees}</p>
+                  }
                 </div>
 
                 <div className="field is-horizontal">
@@ -190,6 +227,9 @@ class AddCompanyModal extends Component {
                       </p>
                     </div>
                   </div>
+                  {errors.company_worth &&
+                    <p className="has-text-danger">{errors.company_worth}</p>
+                  }
                 </div>
 
                 <div className="field is-horizontal">
@@ -204,6 +244,9 @@ class AddCompanyModal extends Component {
                       </p>
                     </div>
                   </div>
+                  {errors.company_shares &&
+                    <p className="has-text-danger">{errors.company_shares}</p>
+                  }
                 </div>
 
                 <div className="file has-name is-centered">
@@ -228,6 +271,8 @@ class AddCompanyModal extends Component {
                         Submit Company</button>
                     <button className="button has-background-grey-dark" onClick={this.clearData}>
                         Clear Data</button>
+                    <button className="button has-background-grey-light" onClick={this.props.closeCompanyModal}>
+                        Go Back</button>
                 </div>
             </form>
         )
@@ -236,6 +281,10 @@ class AddCompanyModal extends Component {
 
 AddCompanyModal.propTypes = {
   addCompany: PropTypes.func.isRequired,
+  editCompany: PropTypes.func.isRequired,
+  closeCompanyModal: PropTypes.func.isRequired,
+  mode: PropTypes.string.isRequired,
+  companyData: PropTypes.object
 }
 
 const mapStateToProps = state => {

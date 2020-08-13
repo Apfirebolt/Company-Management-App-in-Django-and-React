@@ -1,9 +1,9 @@
 .modal_container {
   background-color: lightblue;
-  padding: 1rem;
+  padding: 2.5rem;
   z-index: 1000;
   position: fixed;
-  width: 70%;
+  width: 80%;
   height: auto;
   top: 50%;
   left: 50%;
@@ -40,5 +40,17 @@ td {
       margin: 1rem auto;
       background-color: indianred;
     }
+  }
+
+  button.has-background-danger {
+    margin: auto 0.5rem;
+  }
+}
+
+.field {
+  p.has-text-danger {
+    margin: auto 0.5rem;
+    font-weight: 500;
+    font-size: 1.1rem;
   }
 }

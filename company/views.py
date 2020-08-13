@@ -15,10 +15,23 @@ class CompanyViewSet(viewsets.ViewSet):
     queryset = Company.objects.all()
 
     def list(self, request):
-        print('Request user is ', request.user)
         queryset = Company.objects.filter(created_by_id=request.user.id)
         serializer = CompanySerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def put(self, request, pk=None):
+        requestData = request.data
+        queryset = Company.objects.all()
+        companyObj = get_object_or_404(queryset, pk=pk)
+        companyObj.company_name = requestData['company_name']
+        companyObj.company_owner = requestData['company_owner']
+        companyObj.company_employees = requestData['company_employees']
+        companyObj.company_shares = requestData['company_shares']
+        companyObj.company_worth = requestData['company_worth']
+        if requestData['company_logo']:
+            companyObj.company_logo = requestData['company_logo']
+        companyObj.save()
+        return Response({'message': 'Company Data was updated successfully'}, status=status.HTTP_200_OK)
 
     def retrieve(self, request, pk=None):
         queryset = Company.objects.all()
@@ -34,7 +47,18 @@ class CompanyViewSet(viewsets.ViewSet):
                         status=status.HTTP_200_OK)
 
     def post(self, request):
-        pass
+        requestData = request.data
+        newCompanyObj = Company(
+            created_by=request.user,
+            company_name=requestData['company_name'],
+            company_owner=requestData['company_owner'],
+            company_employees=requestData['company_employees'],
+            company_shares=requestData['company_shares'],
+            company_worth=requestData['company_worth'],
+            company_logo=requestData['company_logo']
+        )
+        newCompanyObj.save()
+        return Response({'message': 'New Company added successfully'}, status=status.HTTP_200_OK)
 
 def company_home(request):
     return render(request, 'company/company_home.html', {})

@@ -17,7 +17,8 @@ class ListCompanyComponent extends Component {
     }
 
     render() {
-        let { companyName, companyOwner, companyShares, companyEmployees, companyWorth, postId, openDeleteModal } = this.props;
+        let { companyName, companyOwner, companyShares, companyEmployees, companyWorth, postId,
+            openDeleteModal, editCompany } = this.props;
         return (
             <tr>
                 <td>{companyName}</td>
@@ -28,6 +29,7 @@ class ListCompanyComponent extends Component {
                 <td>
                     <button className="button has-background-danger has-text-white" onClick={() => {openDeleteModal(postId)}}>Delete</button>
                     <button className="button has-background-info has-text-white" onClick={() => {this.openCompanyDetails(postId)}}>Details</button>
+                    <button className="button has-background-success has-text-white" onClick={() => {editCompany(postId)}}>Update</button>
                 </td>
             </tr>
         )
@@ -44,7 +46,8 @@ ListCompanyComponent.propTypes = {
   companyImage: PropTypes.string.isRequired,
   openDetailModal: PropTypes.func.isRequired,
   getCompanyDetail: PropTypes.func.isRequired,
-  openDeleteModal: PropTypes.func.isRequired
+  openDeleteModal: PropTypes.func.isRequired,
+  editCompany: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => {

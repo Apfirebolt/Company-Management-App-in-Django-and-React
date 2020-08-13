@@ -4,9 +4,18 @@ import * as companyTypes from '../store/company/companyActions';
 import PropTypes from 'prop-types';
 
 class DeleteCompanyComponent extends Component {
+    constructor() {
+        super();
+        this.deleteCompanyHelper = this.deleteCompanyHelper.bind(this);
+    }
+
+    deleteCompanyHelper(post_id) {
+        this.props.deleteCompany(post_id);
+        this.props.closeDeleteModal();
+    }
 
     render() {
-        const { currentCompany, deleteCompany } = this.props;
+        const { currentCompany } = this.props;
         return (
             <div className="form_container">
                <p className="title">
@@ -14,8 +23,11 @@ class DeleteCompanyComponent extends Component {
                    "{currentCompany.company_name}"</span>
                </p>
 
-                <button className="button has-text-white has-background-danger" onClick={() => {deleteCompany(currentCompany.id)}}>
+                <button className="button has-text-white has-background-danger" onClick={() => {this.deleteCompanyHelper(currentCompany.id)}}>
                     Yes, Delete {currentCompany.company_name}
+                </button>
+                <button className="button has-text-white has-background-success" onClick={() => {this.props.closeDeleteModal()}}>
+                    Nope
                 </button>
             </div>
         )
@@ -25,6 +37,7 @@ class DeleteCompanyComponent extends Component {
 DeleteCompanyComponent.propTypes = {
   currentCompany: PropTypes.object.isRequired,
   deleteCompany: PropTypes.func.isRequired,
+  closeDeleteModal: PropTypes.func.isRequired
 }
 
 

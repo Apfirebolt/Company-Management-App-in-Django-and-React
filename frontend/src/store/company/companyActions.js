@@ -34,10 +34,10 @@ export const listCompanies = () => (dispatch, getState) => {
 // ADD A COMPANY
 export const addCompany = (payload) => (dispatch, getState) => {
   authInstance
-    .post("company/api", payload, tokenConfig(getState))
+    .post("company/api/", payload, tokenConfig(getState))
     .then(res => {
       toast.success("New company data successfully added!", toastOptions);
-      dispatch(companyTypes.LIST_COMPANY);
+      dispatch(listCompanies());
     })
     .catch(err => {
       console.error(err);
@@ -47,20 +47,13 @@ export const addCompany = (payload) => (dispatch, getState) => {
 
 // UPDATE COMPANY
 export const updateCompany = (payload) => {
-  return (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
+  return (dispatch, getState) => {
+  let url = "company/api/" + payload.id + '/';
   authInstance
-    .post("accounts/api/register", payload, config)
+    .put(url, payload.actualFormData, tokenConfig(getState))
     .then(res => {
-      dispatch({
-        type: accountTypes.REGISTER_SUCCESS,
-        val: res.data.token
-      });
-      toast.success('Company data successfully updated!', toastOptions);
+      dispatch(listCompanies());
+      toast.success('Company was successfully updated!', toastOptions);
     })
     .catch(err => {
       toast.error("Failed to update this company.", toastOptions);
@@ -74,6 +67,7 @@ export const deleteCompany = (company_id) => {
   authInstance
     .delete("company/api/" + company_id, tokenConfig(getState))
     .then(res => {
+      dispatch(listCompanies());
       toast.success('Company was successfully deleted!', toastOptions);
     })
     .catch(err => {

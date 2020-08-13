@@ -14,13 +14,47 @@ class DashboardPage extends Component {
             isModalOpen: false,
             detailModalOpen: false,
             isDeleteModalOpen: false,
-            deleteCompanyData: null
+            selectedCompanyData: null,
+            mode: 'Add'
         }
-        this.modalToggle = this.modalToggle.bind(this);
         this.openDetailModal = this.openDetailModal.bind(this);
         this.closeDetailModal = this.closeDetailModal.bind(this);
         this.openDeleteModal = this.openDeleteModal.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
+        this.openAddCompanyModal = this.openAddCompanyModal.bind(this);
+        this.closeAddCompanyModal = this.closeAddCompanyModal.bind(this);
+        this.editCompany = this.editCompany.bind(this);
+    }
+
+    editCompany(post_id) {
+        let { isModalOpen, mode } = this.state;
+        let { allCompanies } = this.props;
+         this.setState({
+            isModalOpen: true,
+            mode: 'Edit'
+         });
+
+         let deletedCompany = allCompanies.filter((item) => {
+             return item.id == post_id;
+         });
+         this.setState({
+             selectedCompanyData: deletedCompany[0]
+         })
+    }
+
+    openAddCompanyModal() {
+        let { isModalOpen, mode } = this.state;
+         this.setState({
+            isModalOpen: true,
+            mode: 'Add'
+         });
+    }
+
+    closeAddCompanyModal() {
+        let { isModalOpen } = this.state;
+         this.setState({
+            isModalOpen: false
+         });
     }
 
     openDetailModal() {
@@ -47,7 +81,7 @@ class DashboardPage extends Component {
              return item.id == post_id;
          });
          this.setState({
-             deleteCompanyData: deletedCompany[0]
+             selectedCompanyData: deletedCompany[0]
          })
     }
 
@@ -72,19 +106,27 @@ class DashboardPage extends Component {
         }
     }
     render() {
-        let { currentUser, userLogout, allCompanies, getCompanyDetail, currentCompany, deleteCompany } = this.props;
-        let { isModalOpen, detailModalOpen, isDeleteModalOpen, deleteCompanyData } = this.state;
+        let { currentUser, userLogout, allCompanies, getCompanyDetail, currentCompany, deleteCompany,
+            addCompany, updateCompany } = this.props;
+        let { isModalOpen, detailModalOpen, isDeleteModalOpen, selectedCompanyData, mode } = this.state;
 
         return (
             <div className="container">
                 {isDeleteModalOpen &&
                     <DeleteCompanyModal
                         deleteCompany={deleteCompany}
-                        currentCompany={deleteCompanyData}
+                        currentCompany={selectedCompanyData}
+                        closeDeleteModal={this.closeDeleteModal}
                     />
                 }
                 {isModalOpen &&
-                    <AddCompanyComponent />
+                    <AddCompanyComponent
+                        addCompany={addCompany}
+                        closeCompanyModal={this.closeAddCompanyModal}
+                        mode={mode}
+                        editCompany={updateCompany}
+                        companyData={selectedCompanyData}
+                    />
                 }
                 {detailModalOpen && currentCompany &&
                     <DetailCompanyModal
@@ -106,7 +148,7 @@ class DashboardPage extends Component {
                     <div className="navbar-end">
                       <div className="navbar-item">
                         <div className="buttons">
-                          <button className="button is-primary" onClick={() => {this.modalToggle()}}>
+                          <button className="button is-primary" onClick={() => {this.openAddCompanyModal()}}>
                             Add Company
                           </button>
                           <button className="button is-light" onClick={() => {userLogout()}}>
@@ -143,6 +185,7 @@ class DashboardPage extends Component {
                                                   openDetailModal={this.openDetailModal}
                                                   getCompanyDetail={getCompanyDetail}
                                                   openDeleteModal={this.openDeleteModal}
+                                                  editCompany={this.editCompany}
                             />
                       )
                   })
@@ -178,6 +221,12 @@ const mapDispatchToProps = dispatch => {
     },
     deleteCompany: (company_id) => {
         dispatch(companyTypes.deleteCompany(company_id))
+    },
+    addCompany: (payload) => {
+        dispatch(companyTypes.addCompany(payload));
+    },
+    updateCompany: (company_id) => {
+        dispatch(companyTypes.updateCompany(company_id))
     }
   }
 };
