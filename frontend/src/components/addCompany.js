@@ -268,7 +268,7 @@ class AddCompanyModal extends Component {
 
                 <div className="button_container">
                     <button className="button has-background-success" onClick={this.submitData}>
-                        Submit Company</button>
+                        {mode == 'Edit' ? 'Update Company' : 'Add Company'}</button>
                     <button className="button has-background-grey-dark" onClick={this.clearData}>
                         Clear Data</button>
                     <button className="button has-background-grey-light" onClick={this.props.closeCompanyModal}>

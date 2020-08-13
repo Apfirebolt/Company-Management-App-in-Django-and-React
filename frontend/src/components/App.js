@@ -1,7 +1,3 @@
-/**
- * Created by hp on 09-08-2020.
- */
-
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import RegisterPage from '../pages/Register';
@@ -9,21 +5,25 @@ import LoginPage from '../pages/Login';
 import DashboardPage from '../pages/Dashboard';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '../store/index';
 import { ToastContainer } from 'react-toastify';
 import { loadUser } from "../store/accounts/accountActions";
 import PrivateRoute from '../common/privateRoute';
-
-
-const store = createStore(rootReducer, applyMiddleware(thunk));
-
 import {
   HashRouter as Router,
   Route,
   Switch,
   Redirect
 } from "react-router-dom";
+
+const initialState = {};
+
+const middleware = [thunk];
+
+const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
+
 
 class App extends Component {
     componentDidMount() {

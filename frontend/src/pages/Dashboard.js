@@ -99,12 +99,12 @@ class DashboardPage extends Component {
         });
     }
     componentDidMount() {
-        let { currentUser, getCompaniesAction } = this.props;
-        getCompaniesAction();
-        if(!currentUser) {
-            this.props.loadCurrentUser();
+        let { currentUser, getCompaniesAction, isAuthenticated } = this.props;
+        if(isAuthenticated) {
+            getCompaniesAction();
         }
     }
+
     render() {
         let { currentUser, userLogout, allCompanies, getCompanyDetail, currentCompany, deleteCompany,
             addCompany, updateCompany } = this.props;
@@ -168,24 +168,24 @@ class DashboardPage extends Component {
                       <th>Employees</th>
                       <th>Shares</th>
                       <th>Turn Over</th>
-                      <th>Actions</th>
+                      <th className="has-text-centered">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                   {allCompanies ? allCompanies.map((item, index) => {
                     return (
                           <ListCompanyComponent key={index}
-                                                  postId={item.id}
-                                                  companyName={item.company_name}
-                                                  companyOwner={item.company_owner}
-                                                  companyShares={item.company_shares}
-                                                  companyEmployees={item.company_employees}
-                                                  companyWorth={item.company_worth}
-                                                  companyImage={item.company_logo}
-                                                  openDetailModal={this.openDetailModal}
-                                                  getCompanyDetail={getCompanyDetail}
-                                                  openDeleteModal={this.openDeleteModal}
-                                                  editCompany={this.editCompany}
+                                                postId={item.id}
+                                                companyName={item.company_name}
+                                                companyOwner={item.company_owner}
+                                                companyShares={item.company_shares}
+                                                companyEmployees={item.company_employees}
+                                                companyWorth={item.company_worth}
+                                                companyImage={item.company_logo}
+                                                openDetailModal={this.openDetailModal}
+                                                getCompanyDetail={getCompanyDetail}
+                                                openDeleteModal={this.openDeleteModal}
+                                                editCompany={this.editCompany}
                             />
                       )
                   })
@@ -200,6 +200,7 @@ class DashboardPage extends Component {
 const mapStateToProps = state => {
   return {
     currentUser: state.accounts.user,
+    isAuthenticated: state.accounts.isAuthenticated,
     allCompanies: state.company.companies,
     currentCompany: state.company.company_detail
   }
@@ -210,8 +211,8 @@ const mapDispatchToProps = dispatch => {
     userLogout: (payload) => {
       dispatch(actionTypes.logout());
     },
-    loadCurrentUser: () => {
-        dispatch(actionTypes.loadUser())
+    loadUserData: () => {
+      dispatch(actionTypes.loadUser());
     },
     getCompaniesAction: () => {
         dispatch(companyTypes.listCompanies())

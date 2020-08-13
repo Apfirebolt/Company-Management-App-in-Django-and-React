@@ -15,8 +15,8 @@ const reducer = ( state = initialState, action ) => {
     case accountTypes.USER_LOADED:
       return updateObject(state, {isAuthenticated: true, isLoading: false, user: action.payload});
     case accountTypes.LOGIN_SUCCESS:
-      localStorage.setItem("Token", action.val);
-      return updateObject(state, {isAuthenticated: true, isLoading: false});
+      localStorage.setItem("Token", action.val.token);
+      return updateObject(state, {isAuthenticated: true, isLoading: false, token: action.val.token, user: action.val.user_data});
     case accountTypes.AUTH_ERROR:
     case accountTypes.LOGIN_FAIL:
     case accountTypes.LOGOUT_SUCCESS:

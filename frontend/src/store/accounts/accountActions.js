@@ -1,4 +1,5 @@
 import * as accountTypes from './accountTypes';
+import * as companyTypes from '../company/companyTypes';
 import authInstance from '../../interceptors/axiosInstance';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -28,15 +29,12 @@ export const loadUser = () => (dispatch, getState) => {
       });
     })
     .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: accountTypes.AUTH_ERROR
-      });
+      console.error(err);
     });
 };
 
 // LOGIN USER
-export const login = (payload) => dispatch => {
+export const login = (payload) => (dispatch, getState) => {
   const config = {
     headers: {
       "Content-Type": "application/json"
@@ -49,15 +47,12 @@ export const login = (payload) => dispatch => {
       toast.success("You are successfully logged in!", toastOptions);
       dispatch({
           type: accountTypes.LOGIN_SUCCESS,
-          val: res.data.token
-        });
+          val: res.data
+        })
     })
     .catch(err => {
       console.error(err);
       toast.error("Failed to login! Some error occurred.", toastOptions);
-      dispatch({
-        type: accountTypes.LOGIN_FAIL
-      });
     });
 };
 
@@ -79,10 +74,8 @@ export const register = (payload) => {
       toast.success(`${payload.username}, You have been successfully registered!`, toastOptions);
     })
     .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: accountTypes.REGISTER_FAIL
-      });
+      console.error(err);
+      toast.error("Failed to register! Some error occurred.", toastOptions);
     });
   }
 }
@@ -93,9 +86,14 @@ export const logout = () => (dispatch, getState) => {
     dispatch({
         type: accountTypes.LOGOUT_SUCCESS
       });
+    dispatch({
+        type: companyTypes.LIST_COMPANY,
+        val: null
+      });
   }
   catch(err) {
-    dispatch(returnErrors(err.response.data, err.response.status));
+    console.error(err);
+    toast.error("Failed to logout! Some error occurred.", toastOptions);
   }
 };
 

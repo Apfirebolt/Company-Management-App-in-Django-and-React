@@ -7,7 +7,18 @@
 .form_container {
   width: 60%;
   margin: 1rem auto;
-  background-color: #00e7eb;
+  background-color: #4366e5;
+  color: #FFF;
   padding: 1rem;
 
+  .title {
+    color: #FFF;
+  }
+  label {
+    color: #FFF;
+  }
+
+  input {
+    color: #00c4a7;
+  }
 }

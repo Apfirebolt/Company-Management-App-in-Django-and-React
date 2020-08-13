@@ -26,7 +26,7 @@ class ListCompanyComponent extends Component {
                 <td>{companyWorth}</td>
                 <td>{companyEmployees}</td>
                 <td>{companyShares}</td>
-                <td>
+                <td className="has-text-centered">
                     <button className="button has-background-danger has-text-white" onClick={() => {openDeleteModal(postId)}}>Delete</button>
                     <button className="button has-background-info has-text-white" onClick={() => {this.openCompanyDetails(postId)}}>Details</button>
                     <button className="button has-background-success has-text-white" onClick={() => {editCompany(postId)}}>Update</button>
