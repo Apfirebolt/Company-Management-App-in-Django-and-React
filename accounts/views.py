@@ -44,6 +44,15 @@ class LoginAPI(generics.GenericAPIView):
       return Response({"message": "Invalid credentials, Failed to login!"},
                       status=status.HTTP_401_UNAUTHORIZED)
 
+
+# Logout API
+class LogoutView(generics.GenericAPIView):
+    def get(self, request, format=None):
+        # simply delete the token to force a login
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
 # Get User API
 class UserAPI(generics.RetrieveAPIView):
   permission_classes = [

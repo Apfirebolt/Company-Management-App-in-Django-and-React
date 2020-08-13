@@ -1,0 +1,7 @@
+export const ADD_COMPANY = "ADD_COMPANY";
+export const UPDATE_COMPANY = "UPDATE_COMPANY";
+export const DELETE_COMPANY = "DELETE_COMPANY";
+export const DETAIL_COMPANY = "DETAIL_COMPANY";
+export const LIST_COMPANY = "LIST_COMPANY";
+
+

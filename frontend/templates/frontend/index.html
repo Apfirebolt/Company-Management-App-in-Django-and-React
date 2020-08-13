@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
     Company Management Application
 {% endblock %}
 
 {% block content %}
     <div id="app"></div>
+    <script src="{% static "frontend/main.js" %}"></script>
 {% endblock %}

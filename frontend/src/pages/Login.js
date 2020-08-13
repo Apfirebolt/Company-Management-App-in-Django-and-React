@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import './accountStyles.scss';
 import { connect } from 'react-redux';
 import * as actionTypes from '../store/accounts/accountActions';
@@ -87,6 +88,9 @@ class LoginPage extends Component {
 
     render() {
         let { userName, userPassword, errors } = this.state;
+        if (this.props.isAuthenticated) {
+            return <Redirect to="/" />;
+        }
         return (
             <div className="form form_container">
                 <h1 className="title has-text-centered">LOGIN</h1>
@@ -130,7 +134,7 @@ class LoginPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    // allFriends: state.accounts.friend_list,
+    isAuthenticated: state.accounts.isAuthenticated,
   }
 };
 

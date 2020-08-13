@@ -22,7 +22,6 @@ export const loadUser = () => (dispatch, getState) => {
   authInstance
     .get("accounts/api/user", tokenConfig(getState))
     .then(res => {
-      console.log('Response data is : ', res.data);
       dispatch({
         type: accountTypes.USER_LOADED,
         payload: res.data
@@ -90,16 +89,14 @@ export const register = (payload) => {
 
 // LOGOUT USER
 export const logout = () => (dispatch, getState) => {
-  authInstance
-    .post("/api/logout/", null, tokenConfig(getState))
-    .then(res => {
-      dispatch({
-        type: LOGOUT_SUCCESS
+  try {
+    dispatch({
+        type: accountTypes.LOGOUT_SUCCESS
       });
-    })
-    .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-    });
+  }
+  catch(err) {
+    dispatch(returnErrors(err.response.data, err.response.status));
+  }
 };
 
 // Setup config with token - helper function
