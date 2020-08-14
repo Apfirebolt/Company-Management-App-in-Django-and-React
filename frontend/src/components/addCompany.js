@@ -170,7 +170,7 @@ class AddCompanyModal extends Component {
                   <div className="field-body">
                     <div className="field">
                       <p className="control">
-                        <input className="input" name="company_name" id="company_name" type="email"
+                        <input className="input" name="company_name" id="company_name" type="text"
                                placeholder="Company Name" value={companyName}
                                onChange={(e) => {this.handleInputChange(e)}}/>
                       </p>

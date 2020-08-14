@@ -46,19 +46,16 @@ class CompanyViewSet(viewsets.ViewSet):
         return Response({'message': 'Company %s was successfully deleted' % companyObj.company_name},
                         status=status.HTTP_200_OK)
 
-    def post(self, request):
-        requestData = request.data
-        newCompanyObj = Company(
-            created_by=request.user,
-            company_name=requestData['company_name'],
-            company_owner=requestData['company_owner'],
-            company_employees=requestData['company_employees'],
-            company_shares=requestData['company_shares'],
-            company_worth=requestData['company_worth'],
-            company_logo=requestData['company_logo']
-        )
-        newCompanyObj.save()
-        return Response({'message': 'New Company added successfully'}, status=status.HTTP_200_OK)
+    def create(self, request):
+        serializer = CompanySerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            # print('Serializer data ', serializer.validated_data)
+            serializer.save(created_by=request.user)
+        else:
+            print(serializer.errors)
+        return Response({'message': 'Company was successfully deleted'},
+                        status=status.HTTP_200_OK)
+
 
 def company_home(request):
     return render(request, 'company/company_home.html', {})

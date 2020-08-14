@@ -6,6 +6,8 @@ import AddCompanyComponent from '../components/addCompany';
 import ListCompanyComponent from '../components/listCompany';
 import DetailCompanyModal from '../components/detailCompany';
 import DeleteCompanyModal from '../components/deleteCompanyModal';
+import { CSSTransition } from 'react-transition-group';
+import './accountStyles.scss';
 
 class DashboardPage extends Component {
     constructor() {
@@ -51,6 +53,7 @@ class DashboardPage extends Component {
     }
 
     closeAddCompanyModal() {
+        console.log('Close modal called..');
         let { isModalOpen } = this.state;
          this.setState({
             isModalOpen: false

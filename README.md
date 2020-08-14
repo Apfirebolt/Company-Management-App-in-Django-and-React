@@ -54,6 +54,6 @@ Edit company modal, is just the same modal which is used for adding and editing 
 Details page of a company, company details would be displayed at the top of the page. Just a simple design can be
 tweaked to make it look more aesthetic :)
 
-![alt text](./screenshots/detail_page.PNG)
+![alt text](./screenshots/details_page.PNG)
 
 
