@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './accountStyles.scss';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actionTypes from '../store/accounts/accountActions';
 
@@ -199,6 +200,9 @@ class RegisterPage extends Component {
                     <button className="button is-dark" onClick={(e) => {this.resetForm(e)}}>Reset</button>
                 </div>
 
+                 <div>
+                    <Link to="/login"><p className="has-text-white">ALREADY HAVE AN ACCOUNT ? CLICK HERE</p></Link>
+                </div>
             </div>
         )
     }

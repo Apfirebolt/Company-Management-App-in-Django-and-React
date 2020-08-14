@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import './accountStyles.scss';
 import { connect } from 'react-redux';
 import * as actionTypes from '../store/accounts/accountActions';
@@ -125,6 +125,12 @@ class LoginPage extends Component {
                 <div className="button_container">
                     <button className="button is-light" onClick={(e) => {this.onDataSubmit(e)}}>Submit</button>
                     <button className="button is-dark" onClick={(e) => {this.resetForm(e)}}>Reset</button>
+                </div>
+
+                <hr/>
+
+                <div>
+                    <Link to="/register"><p className="has-text-white">DO NOT HAVE AN ACCOUNT ? CLICK HERE</p></Link>
                 </div>
 
             </div>
